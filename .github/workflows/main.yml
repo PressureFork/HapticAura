@@ -20,17 +20,16 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      # --- THE FIX ---
-      # Instead of generating a wrapper, we force-install Gradle 8.0
-      # This bypasses the incompatibility with the server's Gradle 9.x
+      # 1. Setup Gradle 8.0 but DISABLE the broken cache
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
         with:
           gradle-version: '8.0'
+          cache-disabled: true 
 
-      # Run gradle directly (no ./gradlew needed)
+      # 2. Run build in "Safe Mode" (No Daemon to prevent crashes)
       - name: Build with Gradle
-        run: gradle assembleDebug --stacktrace
+        run: gradle assembleDebug --no-daemon --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
