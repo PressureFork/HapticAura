@@ -1,0 +1,2 @@
+# HapticAura
+Haptics for Android
